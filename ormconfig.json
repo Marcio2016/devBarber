@@ -4,5 +4,11 @@
   "port": 5432,
   "username":"postgres",
   "password": "marcio123",
-  "database":"devbarber"
+  "database":"devbarber",
+  "migrations": [
+    "./src/database/migrations/*.ts"
+  ],
+  "cli": {
+    "migrationsDir": "./src/database/migrations"
+  }
 }
