@@ -1,4 +1,5 @@
 import { startOfHour } from 'date-fns';
+import { getCustomRepository } from 'typeorm';
 import Agenda from '../models/Agenda';
 import AgendaRepository from '../repositories/AgendaRepository';
 
@@ -8,23 +9,21 @@ interface Request {
 }
 
 class CreateAgendamentoService {
-  private repository: AgendaRepository;
+  public async execute({ profissional, data }: Request): Promise<Agenda> {
+    const repository = getCustomRepository(AgendaRepository);
 
-  constructor(repository: AgendaRepository) {
-    this.repository = repository;
-  }
-
-  public execute({ profissional, data }: Request): Agenda {
     const dataRecebida = startOfHour(data);
-    const agendamentoComDatasIguais = this.repository.findByDate(dataRecebida);
+    const agendamentoComDatasIguais = await repository.findByDate(dataRecebida);
 
     if (agendamentoComDatasIguais) {
       throw Error('Este horário já está preenchida');
     }
-    const agendamento = this.repository.create({
+    const agendamento = repository.create({
       profissional,
       data: dataRecebida,
     });
+
+    await repository.save(agendamento);
 
     return agendamento;
   }

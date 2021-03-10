@@ -1,36 +1,14 @@
-import { isEqual } from 'date-fns';
+import { EntityRepository, Repository } from 'typeorm';
 import Agenda from '../models/Agenda';
 
-interface CreateAgendaDTO {
-  profissional: string;
-  data: Date;
-}
-
-class AgendaRepository {
-  private agenda: Agenda[];
-
-  constructor() {
-    this.agenda = [];
-  }
-
-  public all(): Agenda[] {
-    return this.agenda;
-  }
-
-  public findByDate(data: Date): Agenda | null {
-    const agendamentoComDatasIguais = this.agenda.find(agendamento =>
-      isEqual(data, agendamento.data),
-    );
+@EntityRepository(Agenda)
+class AgendaRepository extends Repository<Agenda> {
+  public async findByDate(data: Date): Promise<Agenda | null> {
+    const agendamentoComDatasIguais = await this.findOne({
+      where: { data },
+    });
 
     return agendamentoComDatasIguais || null;
-  }
-
-  public create({ profissional, data }: CreateAgendaDTO): Agenda {
-    const agendamento = new Agenda({ profissional, data });
-
-    this.agenda.push(agendamento);
-
-    return agendamento;
   }
 }
 

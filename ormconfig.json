@@ -5,6 +5,9 @@
   "username":"postgres",
   "password": "marcio123",
   "database":"devbarber",
+  "entities":[
+    "./src/models/*.ts"
+  ],
   "migrations": [
     "./src/database/migrations/*.ts"
   ],
