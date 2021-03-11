@@ -5,26 +5,21 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  ManyToOne,
-  JoinColumn,
 } from 'typeorm';
-import Usuario from './Usuario';
 
-@Entity('agendamentos')
-class Agenda {
+@Entity('usuarios')
+class Usuario {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
-  // eslint-disable-next-line camelcase
-  profissional_id: string;
+  nome: string;
 
-  @ManyToOne(() => Usuario)
-  @JoinColumn({ name: 'profissional_id' })
-  prossifional: Usuario;
+  @Column()
+  email: string;
 
-  @Column('timestamp with time zone')
-  data: Date;
+  @Column()
+  senha: string;
 
   @CreateDateColumn()
   // eslint-disable-next-line camelcase
@@ -35,4 +30,4 @@ class Agenda {
   updated_at: Date;
 }
 
-export default Agenda;
+export default Usuario;
