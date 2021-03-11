@@ -9,14 +9,15 @@ const agendamentosRoutes = Router();
 
 agendamentosRoutes.post('/', async (request, response) => {
   try {
-    const { profissional, data } = request.body;
+    // eslint-disable-next-line camelcase
+    const { profissional_id, data } = request.body;
 
     const parsedDate = parseISO(data);
 
     const service = new CreateAgendamentoService();
 
     const agendamento = await service.execute({
-      profissional,
+      profissional_id,
       data: parsedDate,
     });
 

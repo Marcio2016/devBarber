@@ -4,12 +4,14 @@ import Agenda from '../models/Agenda';
 import AgendaRepository from '../repositories/AgendaRepository';
 
 interface Request {
-  profissional: string;
+  // eslint-disable-next-line camelcase
+  profissional_id: string;
   data: Date;
 }
 
 class CreateAgendamentoService {
-  public async execute({ profissional, data }: Request): Promise<Agenda> {
+  // eslint-disable-next-line camelcase
+  public async execute({ profissional_id, data }: Request): Promise<Agenda> {
     const repository = getCustomRepository(AgendaRepository);
 
     const dataRecebida = startOfHour(data);
@@ -19,7 +21,7 @@ class CreateAgendamentoService {
       throw Error('Este horário já está preenchida');
     }
     const agendamento = repository.create({
-      profissional,
+      profissional_id,
       data: dataRecebida,
     });
 
