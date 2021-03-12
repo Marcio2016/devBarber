@@ -4,8 +4,11 @@ import { parseISO } from 'date-fns';
 import { getCustomRepository } from 'typeorm';
 import AgendaRepository from '../repositories/AgendaRepository';
 import CreateAgendamentoService from '../services/CreateAgendamentoService';
+import autenticacao from '../middlewares/Autenticacao';
 
 const agendamentosRoutes = Router();
+
+agendamentosRoutes.use(autenticacao);
 
 agendamentosRoutes.post('/', async (request, response) => {
   try {

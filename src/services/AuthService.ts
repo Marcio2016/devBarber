@@ -2,6 +2,7 @@ import { getRepository } from 'typeorm';
 import { compare, hash } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 import Usuario from '../models/Usuario';
+import auth from '../config/auth';
 
 interface Request {
   email: string;
@@ -29,9 +30,9 @@ class AuthService {
       throw Error('E-mail ou senha inválidos');
     }
 
-    const token = sign({}, '24500fa6ecaeb8300905727802af3081', {
+    const token = sign({}, auth.jwt.secret, {
       subject: usuario.id,
-      expiresIn: '1d',
+      expiresIn: auth.jwt.expiresIn,
     });
 
     return { usuario, token };
