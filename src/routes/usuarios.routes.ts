@@ -3,6 +3,7 @@ import multer from 'multer';
 import uploadConfig from '../config/uploads';
 import autenticacao from '../middlewares/Autenticacao';
 import CreateUsuarioService from '../services/CreateUsuarioService';
+import UpdateAvatarService from '../services/UpdateAvatarService';
 
 const usuariosRoutes = Router();
 
@@ -34,7 +35,20 @@ usuariosRoutes.patch(
   autenticacao,
   upload.single('avatar'),
   async (request, response) => {
-    return response.json({ ok: true });
+    try {
+      const avatarService = new UpdateAvatarService();
+      const usuario = await avatarService.execute({
+        usuario_id: request.user.id,
+        file_name: request.file.filename,
+      });
+
+      // @ts-expect-error tratando erro
+      delete usuario.senha;
+
+      return response.json(usuario);
+    } catch (error) {
+      return response.status(400).json({ error: error.message });
+    }
   },
 );
 
